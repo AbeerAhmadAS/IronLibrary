@@ -43,8 +43,8 @@ public class LibraryMethods {
         System.out.println("7. List books by USN");
         System.out.println("8. Search By Quantity");
         System.out.println("9. Search For Book By ISBN");
-        System.out.println("10. Search For Book By ID");
-        System.out.println("11. Exit");
+        System.out.println("10.Search For Book By ID");
+        System.out.println("11.Exit");
         System.out.print("Enter your choice: ");
     }
 
@@ -85,14 +85,15 @@ public class LibraryMethods {
     public void searchBookByTitle(Scanner scanner) {
         System.out.print("Enter a book title to search: ");
         String searchTitle = scanner.nextLine();
+        Optional<Book> bookOptional = bookRepository.findByTitle(searchTitle);
         try {
-            Optional<Book> bookOptionalValid = bookRepository.findByTitle(searchTitle);
-            if (bookOptionalValid.isPresent()) {
-                Book validBook = bookOptionalValid.get();
+            if (bookOptional.isEmpty()) {
+                System.out.println("No book found in the specified title: " + searchTitle);
+            }else {
+                Book validBook = bookOptional.get();
                 System.out.println("Book found with the valid title: " + validBook.getTitle());
-            } else {
-                System.out.println("No book found with the valid title: " + searchTitle);
-            }
+                    System.out.println("ISBN: " + validBook.getIsbn() + ", Category: " + validBook.getCategory());
+                }
         } catch (Exception e) {
             System.err.println("An unexpected exception occurred while testing with a valid title: " + e.getMessage());
         }
@@ -108,43 +109,55 @@ public class LibraryMethods {
             String validCategory = scanner.nextLine();
             List<Book> books = bookRepository.findByCategory(validCategory);
 
+        try {
             if (books.isEmpty()) {
                 System.out.println("No books found in the specified category.");
             } else {
                 for (Book book : books) {
                     System.out.println("ISBN: " + book.getIsbn() + ", Title: " + book.getTitle());
                 }
-            }
+            }} catch (Exception e) {
+            System.err.println("An unexpected exception occurred while testing with a valid title: " + e.getMessage());
         }
+    }
 
 
         // *************** fourth method **********
     public void searchBookByAuthor(Scanner scanner) {
         System.out.print("Enter the author's name to search for books: ");
         String authorName = scanner.nextLine();
+        List<Object[]> bookDetails = bookRepository.findByAuthorName(authorName);
+        for (Object[] row : bookDetails) {
+            String bookTitle = (String) row[0];
+            String bookCategory = (String) row[1];
+            Integer quantity = Integer.valueOf(row[2].toString());
 
-        List<Book> booksByAuthor = new ArrayList<>();
+            System.out.printf("\n%-40s %-20s %-15s \n", "Book title", "Book Category", "Quantity");
 
-        /*
-            1º We declare a new variable and we read the data from the db
-            2º We do the for loop using this new variable
-
-            Otherwise we are not looking into our database! :)
-         */
-        for (Book book : books) {
-            if (book.getAuthor().getName().equals(authorName)) {
-                booksByAuthor.add(book);
-            }
+            System.out.printf("%-40s %-20s %-15s \n", bookTitle,bookCategory,quantity);
         }
 
-        if (!booksByAuthor.isEmpty()) {
-            System.out.println("Books by author " + authorName + ":");
-            for (Book book : booksByAuthor) {
-                System.out.println("Title: " + book.getTitle() + ", ISBN: " + book.getIsbn());
+       /* try {
+            for (Book book : books) {
+                if (book.getAuthor().getName().equals(authorName)) {
+                    booksByAuthor.add(book);
+                }
             }
-        } else {
-            System.out.println("No books found by author " + authorName);
+
+            if (!booksByAuthor.isEmpty()) {
+                System.out.println("Books by author " + authorName + ":");
+                for (Book book : booksByAuthor) {
+                    System.out.println("Title: " + book.getTitle() + ", ISBN: " + book.getIsbn());
+                }
+            } else {
+                System.out.println("No books found by author " + authorName);
+                   }
+        } catch (Exception e) {
+            System.err.println("An unexpected exception occurred while testing with a valid title: " + e.getMessage());
         }
+
+        */
+
     }
 
     // ********** fifth method ***********
@@ -190,7 +203,7 @@ public class LibraryMethods {
 
         // ********** Seventh method **************
 
-        public void ListBooksByUsn(Scanner scanner){
+    public void ListBooksByUsn(Scanner scanner){
             Scanner input = new Scanner(System.in);
             System.out.println("Enter usn: ");
             String usn = input.nextLine();
@@ -209,21 +222,16 @@ public class LibraryMethods {
 
         }
 
-
-
     //***************** Bonus 1 ********************
     public void searchBooksByQuantity(Scanner scanner) {
         System.out.print("Enter quantity to search: ");
         int searchQuantity = scanner.nextInt();
         try {
-            Optional<Book> bookOptionalValid = bookRepository.findByQuantity(searchQuantity);
-            if (bookOptionalValid.isPresent()) {
-                Book validBook = bookOptionalValid.get();
-                System.out.println("Book found with the entered quantity: ");
-                System.out.println("ISBN: " + validBook.getIsbn() + ", Title: " + validBook.getTitle());
-            } else {
-                System.out.println("No book found with the entered quantity: " + searchQuantity);
-            }
+        List<Book> bookList = bookRepository.findByQuantity(searchQuantity);
+        for (Book book : bookList) {
+            System.out.println("ISBN: " + book.getIsbn() + ", Title: " + book.getTitle());
+             }
+
         } catch (Exception e) {
             System.err.println("An unexpected exception occurred while searching by quantity: " + e.getMessage());
         }

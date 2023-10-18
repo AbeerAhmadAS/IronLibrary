@@ -1,9 +1,5 @@
 package com.Ironhack.IronLibrary;
 
-//import com.Ironhack.IronLibrary.model.LibraryMethods;
-import com.Ironhack.IronLibrary.Repository.AuthorRepository;
-import com.Ironhack.IronLibrary.model.Author;
-import com.Ironhack.IronLibrary.model.Book;
 import com.Ironhack.IronLibrary.model.LibraryMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -30,7 +26,7 @@ LibraryMethods libraryMethods;
 		do {
 			libraryMethods.displayMenu();
 			choice = scanner.nextInt();
-			scanner.nextLine(); // Consume the newline character
+			scanner.nextLine();
 
 			switch (choice) {
 				case 1:
@@ -68,9 +64,8 @@ LibraryMethods libraryMethods;
 					break;
 				default:
 					System.out.println("Invalid choice. Please try again.");
-					//1break;
 			}
-		} while (choice != 11);
+		} while (choice != 11 );
 
 
 	}

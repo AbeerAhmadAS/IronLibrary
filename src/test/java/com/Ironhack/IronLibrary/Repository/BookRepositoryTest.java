@@ -118,8 +118,8 @@ class BookRepositoryTest {
     void testFindByQuantity() // Bonus Done
     {
         try{
-            Optional<Book> bookOptional = bookRepository.findByQuantity(2);
-            assertTrue(bookOptional.isPresent());
+            List<Book> bookOptional = bookRepository.findByQuantity(2);
+            assertEquals(2,bookOptional.size());
         }catch (EmptyResultDataAccessException e){
             fail("Expected Book not found");
         }

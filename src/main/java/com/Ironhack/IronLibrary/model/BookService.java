@@ -12,10 +12,8 @@ public class BookService {
     private BookRepository bookRepository;
 
     public void saveBook(String isbn, String title, String category, Integer quantity) {
-        // Create a new Book entity
-        Book book = new Book(isbn, title, category, quantity);
 
-        // Save the book entity to the database
+        Book book = new Book(isbn, title, category, quantity);
         bookRepository.save(book);
     }
 }

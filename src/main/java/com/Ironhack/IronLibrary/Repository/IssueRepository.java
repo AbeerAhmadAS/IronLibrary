@@ -23,8 +23,7 @@ import java.util.Optional;
                 "from issue as i \n" +
                 "join book as b on i.issue_book_id =b.isbn \n" +
                 "join student s on i.issue_student_usn =s.usn where s.usn = :usn",nativeQuery = true)
-        List<Object[]> findBooksByStudentUsn(@Param("usn") String usn
-        );
+        List<Object[]> findBooksByStudentUsn(@Param("usn") String usn);
 
     }
 

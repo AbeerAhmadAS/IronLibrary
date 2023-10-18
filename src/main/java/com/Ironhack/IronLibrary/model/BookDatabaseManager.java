@@ -81,16 +81,9 @@ public class BookDatabaseManager {
         String query = "SELECT * FROM book";
 
         try {
-            // Establish connection
             Connection connection3 = DriverManager.getConnection(url, username, password);
-
-            // Create a statement
             Statement statement3 = connection3.createStatement();
-
-            // Execute the query
             ResultSet resultSet3 = statement3.executeQuery(query);
-
-            // Process and display the data
             while (resultSet3.next()) {
 
                 Integer column0Value = resultSet3.getInt("id");
@@ -100,15 +93,10 @@ public class BookDatabaseManager {
                 Integer column4Value = resultSet3.getInt("title");
                 Integer column5Value = resultSet3.getInt("author_id");
 
-                //List<Book>bookLister;
-                // bookLister.add(column2Value,column0Value,column1Value,column3Value,column4Value,column5Value);
-
-
-                // Replace with your desired display mechanism
                 System.out.println(column0Value + column1Value + column2Value + column3Value + column4Value + column5Value);
-            }
+                }
 
-            // Close the resources
+
             resultSet3.close();
             statement3.close();
             connection3.close();
